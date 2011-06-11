@@ -119,14 +119,16 @@ is run).
   (mapconcat 'identity (split-string 
 			(replace-regexp-in-string "//.*$" ""
 						  (buffer-substring start end ))) " "))
+
 ;;;###autoload
 (defun js-send-region (start end)
   "Send the current region to the inferior Javascript process."
   (interactive "r")
   (run-js inferior-js-program-command t)
-  (comint-send-string inferior-js-buffer ;;workaround for windows strip newlines 
-              (js-clean-region start end))
-  ;;(comint-send-region inferior-js-buffer start end)
+  (if (eq system-type 'windows-nt)
+      (comint-send-string inferior-js-buffer ;;workaround for windows, strip newlines, comments
+			  (js-clean-region start end))
+    (comint-send-region inferior-js-buffer start end))
   (comint-send-string inferior-js-buffer "\n"))
 
 ;;;###autoload
