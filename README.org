@@ -1,0 +1,3 @@
+This is an adaption of http://js-comint-el.sourceforge.net/
+
+It has a small modification to strip the new lines and comments so that it works with node on windows
